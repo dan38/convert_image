@@ -23,7 +23,7 @@ int test(const char *str)
 // display the image
 void display(cv::Mat &img)
 {
-    cv::namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
+    cv::namedWindow("Display Image", WINDOW_AUTOSIZE);
     cv::imshow("Display Image", img);
     cv::waitKey(0);
 }
@@ -46,14 +46,24 @@ int read_config(const char *filename)
     return 0;
 }
 
+// create test image
+int create_test_image(const char *filename)
+{
+    cv::Mat img(100, 100, CV_8UC3, cv::Scalar(0, 0, 0));
+    display(img);
+    cv::imwrite(filename, img);
+    return 0;
+}
+
 int main(int argv, char *args[])
 {
     if (argv < 2)
     {
         printf("Usage: %s <file>\n", args[0]);
+        create_test_image("test.jpg");
         return 1;
     }
 
-    read_config(args[1]);
+    // read_config(args[1]);
     return 0;
 }
