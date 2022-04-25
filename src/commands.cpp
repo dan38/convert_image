@@ -5,31 +5,24 @@
 
 commands_t::commands_t()
 {
-    name = NULL;
-    target_name = NULL;
+    // target_name = NULL;
     command = eNULL;
     func = NULL;
 };
 
 commands_t::commands_t(const char *line)
 {
-    name = NULL;
-    target_name = NULL;
+    // target_name = NULL;
     command = eNULL;
     func = NULL;
     set_command(line);
 };
 
-commands_t::~commands_t()
-{
-    if (name)
-        free(name);
-};
+commands_t::~commands_t(){};
 
 void commands_t::set_command(const char *line)
 {
-    if (name)
-        free(name);
+    target_name.clear();
     command = eNULL;
     func = NULL;
     // should free args too
@@ -67,8 +60,13 @@ int commands_t::parse(const char *line)
         else if (p[0] == '=')
         {
             target_name = items.front().c_str();
+            items.pop_front();
+            assert(items.size() == 0);
         }
-        items.push_back(std::string(p));
+        else
+        {
+            items.push_back(std::string(p));
+        }
 
         p = strtok(NULL, " ,");
     }
@@ -78,13 +76,9 @@ int commands_t::parse(const char *line)
 
 void commands_t::debug_dump()
 {
-    if (name != NULL)
-        printf("name: %s\n", name);
-
     printf("command: %d\n", command);
 
-    if (target_name != NULL)
-        printf("target_name: %s\n", target_name);
+    printf("target_name: %s\n", target_name.c_str());
 
     printf("args: %lu\n", items.size());
 

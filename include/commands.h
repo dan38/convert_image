@@ -22,12 +22,14 @@ public:
     void set_command(const char *line);
     enum_commands get_command() { return command; };
     void debug_dump();
+    std::string get_target_name() { return target_name; };
+
+    // temporary, need to figure out a better way to do this
+    std::list<std::string> items;
 
 protected:
-    char *name;
     enum enum_commands command;
-    const char *target_name;
-    std::list<std::string> items;
+    std::string target_name;
     int parse(const char *line);
     int (*func)(int argc, char **argv);
 };

@@ -10,18 +10,17 @@
 
 using namespace cv;
 using namespace std;
-
+/*
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-    void test_lines();
-
+*/
+/*
 #ifdef __cplusplus
 }
 #endif
-
+*/
 void map_sample()
 {
     std::map<std::string, int> m;
@@ -60,21 +59,28 @@ void test_do_it_with_ascii_lines()
 
 void test_lines()
 {
-    /*
     ConvertImage *ci = new ConvertImage();
 
-    commands_t *cmd = new commands_t("src = create 100, 100");
+    const char *line = "src = create 100, 100";
+    commands_t *cmd = new commands_t(line);
+    printf("%s\n", line);
     cmd->debug_dump();
     ci->do_command(cmd);
+    printf("==================\n");
 
-    cmd->set_command("result = rotate src, 90, (0, 0)");
+    line = "result = rotate src, 90, (0, 0)";
+    printf("%s\n", line);
+    cmd->set_command(line);
     cmd->debug_dump();
     ci->do_command(cmd);
+    printf("==================\n");
 
-    cmd->set_command("save result");
+    line = "save result test.jpg";
+    printf("%s\n", line);
+    cmd->set_command(line);
     cmd->debug_dump();
     ci->do_command(cmd);
-    */
+    printf("==================\n");
 }
 
 int main(int argv, char *args[])
