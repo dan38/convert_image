@@ -95,8 +95,8 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
         int columns = stoi(cmd->items[0]);
         int rows = stoi(cmd->items[1]);
         int b = stoi(cmd->items[2]);
-        int r = stoi(cmd->items[3]);
-        int g = stoi(cmd->items[4]);
+        int g = stoi(cmd->items[3]);
+        int r = stoi(cmd->items[4]);
 
         // TBD write something fancy to pull apart color
         //
@@ -105,7 +105,7 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
         // also need to work out how to handle alpha
         // and bit depth?
 
-        cv::Mat img(columns, rows, CV_8UC3, cv::Scalar(b, r, g));
+        cv::Mat img(columns, rows, CV_8UC3, cv::Scalar(b, g, r));
         printf("Create not fully implemented %s:%d\n", __FILE__, __LINE__);
         images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), img));
         // cv::imwrite("create.jpg", img);
@@ -128,8 +128,11 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
             rotate_image(images.find(src)->second, result, 45, cv::Point2f(0, 0));
             // cv::Mat rot_mat = cv::getRotationMatrix2D(point, degrees, 1.0);
             // cv::warpAffine(src, dest, rot_mat, src.size());
-            images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), result));
-            save_image(result, "rotate", prefix, cmd->get_target_name().c_str());
+            // images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), result));
+
+            // does this cause a memory leak we just overwrote src with result
+            images.insert(std::pair<std::string, cv::Mat>(src, result));
+            save_image(result, "rotate", prefix, src.c_str());
             printf("rotate\n");
         }
     }
@@ -144,11 +147,21 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
         }
         else
         {
+            // TODO add error checking!!!!
+            int sx = stoi(cmd->items[1]);
+            int sy = stoi(cmd->items[2]);
+            int ex = stoi(cmd->items[3]);
+            int ey = stoi(cmd->items[4]);
+            int b = stoi(cmd->items[5]);
+            int g = stoi(cmd->items[6]);
+            int r = stoi(cmd->items[7]);
+            int thickness = stoi(cmd->items[8]);
             printf("Line not fully implemented %s:%d\n", __FILE__, __LINE__);
-            cv::line(images.find(src)->second, cv::Point(0, 0), cv::Point(100, 100), cv::Scalar(0, 255, 255), 5);
+            cv::line(images.find(src)->second, cv::Point(sx, sy), cv::Point(ex, ey), cv::Scalar(b, g, r), thickness);
             // images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), result));
-            save_image(images.find(src)->second, "line", prefix, cmd->get_target_name().c_str());
-            printf("line\n");
+            printf("line thickness %d  %s:%d\n", thickness, __FILE__, __LINE__);
+            save_image(images.find(src)->second, "line", prefix, src.c_str());
+            printf("line %s:%d\n", __FILE__, __LINE__);
         }
     }
     else if (cmd->get_command() == eCIRCLE)
@@ -167,7 +180,7 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
             printf("Circle not fully implemented %s:%d\n", __FILE__, __LINE__);
             cv::circle(images.find(src)->second, cv::Point(50, 50), 40, cv::Scalar(255, 255, 255), 5);
             // images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), result));
-            save_image(images.find(src)->second, "circle", prefix, cmd->get_target_name().c_str());
+            save_image(images.find(src)->second, "circle", prefix, src.c_str());
             printf("circle\n");
         }
     }
@@ -187,7 +200,7 @@ bool ConvertImage::do_command(commands_t *cmd, const char *prefix)
             printf("Rectangle not fully implemented %s:%d\n", __FILE__, __LINE__);
             cv::rectangle(images.find(src)->second, cv::Point(0, 0), cv::Point(100, 100), cv::Scalar(255, 255, 255), 5);
             // images.insert(std::pair<std::string, cv::Mat>(cmd->get_target_name(), result));
-            save_image(images.find(src)->second, "rectangle", prefix, cmd->get_target_name().c_str());
+            save_image(images.find(src)->second, "rectangle", prefix, src.c_str());
             printf("rectangle\n");
         }
     }

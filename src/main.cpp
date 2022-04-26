@@ -63,10 +63,10 @@ void test_lines()
     // color is BGR
     const char *lines[] = {
         "srcb = create 400, 100, 255, 0, 0",
-        "srcg = create 400, 100, 0, 255, 0",
-        "srcr = create 400, 100, 0, 0, 255",
-        "line srcb, (0, 0), (100, 100)",
-        "rotate srcb, 90, (0, 0)",
+        "srcg = create 100, 200, 0, 255, 0",
+        "srcr = create 300, 200, 0, 0, 255",
+        "line srcb, 20, 30, 100, 50, 255, 255, 0, 4",
+        "rotate srcb, 45, 10, 20",
         "display result",
         "exit"};
 
@@ -79,7 +79,7 @@ void test_lines()
     {
         printf("%s\n", lines[ii]);
         cmd->set_command(lines[ii]);
-        cmd->debug_dump();
+        // cmd->debug_dump();
         snprintf(step, 99, "%d", ii);
         ci->do_command(cmd, step);
         printf("==================\n");
