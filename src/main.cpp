@@ -37,7 +37,7 @@ void test_do_it_with_ascii_lines()
     std::map<std::string, cv::Mat> images;
     // create a 100 x 100 image called src
     // line could be src = create 100, 100
-    cv::Mat img(100, 100, CV_8UC3, cv::Scalar(0, 0, 0));
+    cv::Mat img(100, 100, CV_8UC3, cv::Scalar(0, 255, 0));
     images.insert(std::pair<std::string, cv::Mat>("src", img));
     // hmm how do we handle result?
     // line could be result = rotate img, 90, (0, 0)
@@ -59,28 +59,31 @@ void test_do_it_with_ascii_lines()
 
 void test_lines()
 {
+    // create height x width image
+    // color is BGR
+    const char *lines[] = {
+        "srcb = create 400, 100, 255, 0, 0",
+        "srcg = create 400, 100, 0, 255, 0",
+        "srcr = create 400, 100, 0, 0, 255",
+        "line srcb, (0, 0), (100, 100)",
+        "rotate srcb, 90, (0, 0)",
+        "display result",
+        "exit"};
+
     ConvertImage *ci = new ConvertImage();
 
-    const char *line = "src = create 100, 100";
-    commands_t *cmd = new commands_t(line);
-    printf("%s\n", line);
-    cmd->debug_dump();
-    ci->do_command(cmd);
-    printf("==================\n");
+    commands_t *cmd = new commands_t();
+    char step[100] = {};
 
-    line = "result = rotate src, 90, (0, 0)";
-    printf("%s\n", line);
-    cmd->set_command(line);
-    cmd->debug_dump();
-    ci->do_command(cmd);
-    printf("==================\n");
-
-    line = "save result test.jpg";
-    printf("%s\n", line);
-    cmd->set_command(line);
-    cmd->debug_dump();
-    ci->do_command(cmd);
-    printf("==================\n");
+    for (int ii = 0; ii < 6; ii++)
+    {
+        printf("%s\n", lines[ii]);
+        cmd->set_command(lines[ii]);
+        cmd->debug_dump();
+        snprintf(step, 99, "%d", ii);
+        ci->do_command(cmd, step);
+        printf("==================\n");
+    }
 }
 
 int main(int argv, char *args[])

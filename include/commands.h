@@ -1,15 +1,19 @@
 #ifndef __COMMANDS_H__
 #define __COMMANDS_H__
-#include <list>
+#include <vector>
 #include <string>
 
 enum enum_commands
 {
     eNULL,
+    eCOMMENT,
     eSAVE,
     eLOAD,
     eCREATE,
     eROTATE,
+    eLINE,
+    eCIRCLE,
+    eRECTANGLE,
 };
 
 class commands_t
@@ -25,11 +29,12 @@ public:
     std::string get_target_name() { return target_name; };
 
     // temporary, need to figure out a better way to do this
-    std::list<std::string> items;
+    std::vector<std::string> items;
 
 protected:
     enum enum_commands command;
     std::string target_name;
+    std::string src_line;
     int parse(const char *line);
     int (*func)(int argc, char **argv);
 };
