@@ -8,10 +8,10 @@ class Action
 {
 public:
     Action(){};
-    ~Action(){};
+    virtual ~Action(){};
 
     virtual const char *name() = 0;
-    void set_command(const char *line);
+    virtual bool set_command(const char *line) = 0;
     void debug_dump();
     std::string get_target_name() { return target_name; };
     virtual void render(std::map<std::string, cv::Mat> &images) = 0;
