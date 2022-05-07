@@ -14,7 +14,8 @@ public:
         return "create";
     };
 
-    bool set_command(const char *cmd_line);
+    bool set_command(const char *cmd_line) override;
+
     void render(std::map<std::string, cv::Mat> &images) override;
 
 protected:
