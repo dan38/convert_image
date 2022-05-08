@@ -15,6 +15,7 @@ add_executable(convert_image
        src/commands.cpp 
        src/ConvertImage.cpp
        src/CreateAction.cpp
+       src/LineAction.cpp
        )
 
 target_link_libraries(convert_image ${OpenCV_LIBS})

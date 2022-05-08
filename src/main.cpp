@@ -9,6 +9,7 @@
 #include "ConvertImage.h"
 #include "Action.h"
 #include "CreateAction.h"
+#include "LineAction.h"
 
 using namespace cv;
 using namespace std;
@@ -88,10 +89,10 @@ void test_lines()
     }
 }
 
-// Action *create_action(char const *line)
-Action *create_action()
+Action *create_action(char const *line)
+// Action *create_action()
 {
-    const char *line = "blah";
+    // const char *line = "blah";
     Action *action = NULL;
     char *s = strdup(line);
     char *p = strtok(s, " ,");
@@ -107,8 +108,12 @@ Action *create_action()
     }
     else
     {
+        // I don't like how this "knows" the format of the line
+        // but it works for now
+        // todo make it better in future
         while (p)
         {
+            // printf("Testing |%s|\n", p);
             if (strcmp(p, "save") == 0)
             {
                 command = eSAVE;
@@ -136,6 +141,9 @@ Action *create_action()
             else if (strcmp(p, "line") == 0)
             {
                 command = eLINE;
+                action = new LineAction();
+                action->name();
+                action->set_command(line);
             }
             else if (strcmp(p, "circle") == 0)
             {
@@ -182,10 +190,10 @@ void test_lines_2()
     for (int ii = 0; ii < sizeof(lines) / sizeof(char *); ii++)
     {
         printf("%s\n", lines[ii]);
-        // action = create_action(lines[ii]);
-        action = create_action();
-        // cmd->set_command(lines[ii]);
-        //  cmd->debug_dump();
+        action = create_action(lines[ii]);
+        // action = create_action();
+        //  cmd->set_command(lines[ii]);
+        //   cmd->debug_dump();
         snprintf(step, 99, "%d", ii);
         // ci->do_command(cmd, step);
         if (action)
@@ -193,8 +201,13 @@ void test_lines_2()
             // this is kinda silly to allocate and then delete the action
             // must be a better way to do it
             // maybe don't delete the action?
+            std::cout << action->get_command() << std::endl;
             action->render(images);
             delete (action);
+        }
+        else
+        {
+            std::cout << "no action" << std::endl;
         }
         printf("==================\n");
     }

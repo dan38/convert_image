@@ -18,6 +18,7 @@ CreateAction::~CreateAction()
 bool CreateAction::set_command(const char *cmd_line)
 {
     bool success = true;
+
     char *s = strdup(cmd_line);
     char *p = strtok(s, " ,");
 
@@ -86,6 +87,17 @@ bool CreateAction::set_command(const char *cmd_line)
     }
     free(s);
     return success;
+}
+
+std::string CreateAction::get_command()
+{
+    std::string cmd_line = target_name + " = " + name();
+    cmd_line += " " + std::to_string(columns);
+    cmd_line += " " + std::to_string(rows);
+    cmd_line += " " + std::to_string(b);
+    cmd_line += " " + std::to_string(g);
+    cmd_line += " " + std::to_string(r);
+    return cmd_line;
 }
 
 void CreateAction::render(std::map<std::string, cv::Mat> &images)
