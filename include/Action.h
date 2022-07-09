@@ -21,7 +21,9 @@ public:
     // Just don't do it std::vector<std::string> items;
 
 protected:
+    bool parse(const char *cmd, const char *line);
     std::string target_name;
     std::string src_line;
+    std::vector<std::string> items;
 };
 #endif // __ACTION_H__
